@@ -14,7 +14,7 @@ function App() {
 						<Categories />
 						<Sort />
 					</div>
-					<h2 class="content__title">Все пиццы</h2>
+					<h2 class="content__title">Все питсыы</h2>
 					<div class="content__items">
 						<PizzaBlock title={"Балийская"} price={500} />
 						<PizzaBlock title={"Гавайская"} price={700} />
