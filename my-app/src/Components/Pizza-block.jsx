@@ -1,26 +1,33 @@
-const PizzaBlock = props => {
+import { useState } from "react";
+
+const PizzaBlock = ({ title, price }) => {
+	const [addNewPizza, setAddNewPizza] = useState(0);
+
+	const increment = () => {
+		setAddNewPizza(addNewPizza + 1);
+	};
 	return (
-		<div class="pizza-block">
+		<div className="pizza-block">
 			<img
-				class="pizza-block__image"
+				className="pizza-block__image"
 				src="https://media.dodostatic.net/image/r:584x584/019635b27c727302835040e5d7c27caa.avif"
 				alt="Pizza"
 			/>
-			<h4 class="pizza-block__title">{props.title}</h4>
-			<div class="pizza-block__selector">
+			<h4 className="pizza-block__title">{title}</h4>
+			<div className="pizza-block__selector">
 				<ul>
-					<li class="active">тонкое</li>
+					<li className="active">тонкое</li>
 					<li>традиционное</li>
 				</ul>
 				<ul>
-					<li class="active">26 см.</li>
+					<li className="active">26 см.</li>
 					<li>30 см.</li>
 					<li>40 см.</li>
 				</ul>
 			</div>
-			<div class="pizza-block__bottom">
-				<div class="pizza-block__price">{props.price}₽</div>
-				<div class="button button--outline button--add">
+			<div className="pizza-block__bottom">
+				<div className="pizza-block__price">от {price}₽</div>
+				<div className="button button--outline button--add">
 					<svg
 						width="12"
 						height="12"
@@ -33,8 +40,8 @@ const PizzaBlock = props => {
 							fill="white"
 						/>
 					</svg>
-					<span>Добавить</span>
-					<i>2</i>
+					<span onClick={increment}>Добавить</span>
+					<i onClick={increment}>{addNewPizza}</i>
 				</div>
 			</div>
 		</div>
