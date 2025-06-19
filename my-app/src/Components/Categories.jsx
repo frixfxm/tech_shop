@@ -21,13 +21,13 @@ const Categories = () => {
 			<ul>
 				{categories.map((value, i) => (
 					<li
+						key={i}
 						className={activeIndex === i ? "active" : ""}
 						onClick={() => onClickCategory(i)}
 					>
 						{value}
 					</li>
 				))}
-				{console.log(activeIndex)}
 			</ul>
 		</div>
 	);
