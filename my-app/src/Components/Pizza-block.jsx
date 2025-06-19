@@ -1,28 +1,37 @@
 import { useState } from "react";
 
-const PizzaBlock = ({ title, price }) => {
-	const [addNewPizza, setAddNewPizza] = useState(0);
+const PizzaBlock = ({ title, price, imageUrl, sizes, types }) => {
+	const [sizeClick, setSizeClick] = useState(0);
+	const [typeClick, setTypeClick] = useState(0);
 
-	const increment = () => {
-		setAddNewPizza(addNewPizza + 1);
-	};
 	return (
 		<div className="pizza-block">
-			<img
-				className="pizza-block__image"
-				src="https://media.dodostatic.net/image/r:584x584/019635b27c727302835040e5d7c27caa.avif"
-				alt="Pizza"
-			/>
+			<img className="pizza-block__image" src={imageUrl} alt="Pizza" />
 			<h4 className="pizza-block__title">{title}</h4>
 			<div className="pizza-block__selector">
 				<ul>
-					<li className="active">тонкое</li>
-					<li>традиционное</li>
+					{types.map(i => {
+						return (
+							<li
+								onClick={() => setTypeClick(i)}
+								className={typeClick === i ? "active" : ""}
+							>
+								{i === 0 ? "традиционное" : "пышное"}
+							</li>
+						);
+					})}
 				</ul>
 				<ul>
-					<li className="active">26 см.</li>
-					<li>30 см.</li>
-					<li>40 см.</li>
+					{sizes.map((i, index) => {
+						return (
+							<li
+								onClick={() => setSizeClick(index)}
+								className={sizeClick === index ? "active" : ""}
+							>
+								{i} см.
+							</li>
+						);
+					})}
 				</ul>
 			</div>
 			<div className="pizza-block__bottom">
@@ -40,8 +49,8 @@ const PizzaBlock = ({ title, price }) => {
 							fill="white"
 						/>
 					</svg>
-					<span onClick={increment}>Добавить</span>
-					<i onClick={increment}>{addNewPizza}</i>
+					<span>Добавить</span>
+					<i>0</i>
 				</div>
 			</div>
 		</div>
