@@ -17,7 +17,7 @@ const Home = () => {
 
 	useEffect(() => {
 		setIsLoading(true);
-		fetch(`https://685452cb6a6ef0ed662ec830.mockapi.io/pizzas?`)
+		fetch(`https://685452cb6a6ef0ed662ec830.mockapi.io/pizzas?${categoriesActiveIndex > 0 ? ''}`)
 			.then(res => res.json())
 			.then(arr => {
 				setItems(arr);
