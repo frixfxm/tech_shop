@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const Categories = () => {
+const Categories = ({ value, setValue }) => {
 	const [activeIndex, setActiveIndex] = useState(0);
 
 	const categories = [
@@ -13,6 +13,7 @@ const Categories = () => {
 	];
 
 	const onClickCategory = index => {
+		setValue(index);
 		setActiveIndex(index);
 	};
 
