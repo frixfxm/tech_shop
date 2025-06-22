@@ -17,15 +17,22 @@ const Home = () => {
 
 	useEffect(() => {
 		setIsLoading(true);
-		fetch(`https://685452cb6a6ef0ed662ec830.mockapi.io/pizzas?${categoriesActiveIndex > 0 ? ''}`)
+
+		const sortBy = popupIndex.sort.replace("-", "");
+		const order = popupIndex.sort.includes("-") ? "asc" : "desc";
+		const category =
+			categoriesActiveIndex > 0 ? `category=${categoriesActiveIndex}` : "";
+		fetch(
+			`https://685452cb6a6ef0ed662ec830.mockapi.io/pizzas?${category}&sortBy=${sortBy}&order=${order}`
+		)
 			.then(res => res.json())
 			.then(arr => {
 				setItems(arr);
 				setIsLoading(false);
 			});
 		window.scrollTo(0, 0);
-	}, [categoriesActiveIndex]);
-
+	}, [categoriesActiveIndex, popupIndex]);
+	console.log(categoriesActiveIndex, popupIndex);
 	return (
 		<div className="container">
 			<div className="content__top">

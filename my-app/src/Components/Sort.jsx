@@ -2,11 +2,14 @@ import { useState } from "react";
 
 const Sort = ({ value, setValue }) => {
 	const [isOpen, setIsOpen] = useState(false);
-	const [popup, setPopup] = useState(0);
+
 	const popupItems = [
-		{ name: "популярности", sort: "rating" },
-		{ name: "цене", sort: "price" },
-		{ name: "алфавиту", sort: "title" },
+		{ name: "популярности(DESC)", sort: "rating" },
+		{ name: "популярности(ASC)", sort: "-rating" },
+		{ name: "цене(DESC)", sort: "price" },
+		{ name: "цене(ASC)", sort: "-price" },
+		{ name: "алфавиту(DESC)", sort: "title" },
+		{ name: "алфавиту(ASC)", sort: "-title" },
 	];
 
 	const onClicketListItem = i => {
