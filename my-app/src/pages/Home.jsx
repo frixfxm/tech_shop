@@ -5,11 +5,11 @@ import Sceleton from "../Components/PizzaBlock/Sceleton";
 import Sort from "../Components/Sort";
 import "../scss/app.scss";
 
-const Home = () => {
+const Home = ({ searchValue }) => {
 	const [items, setItems] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 
-	const [categoriesActiveIndex, setCategoriesActiveIndex] = useState(1);
+	const [categoriesActiveIndex, setCategoriesActiveIndex] = useState(0);
 	const [popupIndex, setPopupIndex] = useState({
 		name: "популярности",
 		sort: "rating",
@@ -33,6 +33,21 @@ const Home = () => {
 		window.scrollTo(0, 0);
 	}, [categoriesActiveIndex, popupIndex]);
 	console.log(categoriesActiveIndex, popupIndex);
+
+	const pizzas = items
+		.filter(obj => {
+			if (obj.title.toLowerCase().includes(searchValue.toLowerCase())) {
+				return true;
+			}
+			return false;
+		})
+
+		.map(i => <PizzaBlock key={i.id} {...i} />);
+
+	const skeletons = [...new Array(6)].map((_, index) => (
+		<Sceleton key={index} />
+	));
+
 	return (
 		<div className="container">
 			<div className="content__top">
@@ -43,11 +58,7 @@ const Home = () => {
 				<Sort value={popupIndex} setValue={id => setPopupIndex(id)} />
 			</div>
 			<h2 className="content__title">Все пиццы</h2>
-			<div className="content__items">
-				{isLoading
-					? [...new Array(6)].map((_, index) => <Sceleton key={index} />)
-					: items.map(i => <PizzaBlock key={i.id} {...i} />)}
-			</div>
+			<div className="content__items">{isLoading ? skeletons : pizzas}</div>
 		</div>
 	);
 };
