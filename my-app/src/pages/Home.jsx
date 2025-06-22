@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Categories from "../Components/Categories";
+import Pagination from "../Components/Pagination";
 import PizzaBlock from "../Components/PizzaBlock";
 import Sceleton from "../Components/PizzaBlock/Sceleton";
 import Sort from "../Components/Sort";
@@ -52,6 +53,7 @@ const Home = ({ searchValue }) => {
 			</div>
 			<h2 className="content__title">Все пиццы</h2>
 			<div className="content__items">{isLoading ? skeletons : pizzas}</div>
+			<Pagination />
 		</div>
 	);
 };

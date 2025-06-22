@@ -1,0 +1,17 @@
+.root {
+	li {
+		display: inline-block;
+		text-align: center;
+		width: 43px;
+		// line-height: 42px;
+		height: 40px;
+		padding: 10px;
+		border: 1px solid #fe5f1e;
+		border-radius: 30px;
+		margin-right: 10px;
+	}
+
+	a {
+		display: inline-block;
+	}
+}
