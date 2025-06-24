@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 const Cart = () => {
 	return (
 		<div className="container container--cart">
-			<div class="cart">
-				<div class="cart__top">
-					<h2 class="content__title">
+			<div className="cart">
+				<div className="cart__top">
+					<h2 className="content__title">
 						<svg
 							width="18"
 							height="18"
