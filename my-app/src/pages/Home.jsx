@@ -1,3 +1,6 @@
+import { useDispatch, useSelector } from "react-redux";
+import { setCategoryId } from "../redux/Slices/filterSlice";
+
 import { useContext, useEffect, useState } from "react";
 import { SearchContext } from "../App";
 import Categories from "../Components/Categories";
@@ -8,11 +11,18 @@ import Sort from "../Components/Sort";
 import "../scss/app.scss";
 
 const Home = () => {
+	const categoriesActiveIndex = useSelector(state => state.filter.categoryId);
+	const dispatch = useDispatch();
+
+	const setCategoriesActiveIndex = id => {
+		dispatch(setCategoryId(id));
+	};
+
 	const { searchValue } = useContext(SearchContext);
 	const [items, setItems] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [onChangePage, setOnChangePage] = useState(1);
-	const [categoriesActiveIndex, setCategoriesActiveIndex] = useState(0);
+	// const [categoriesActiveIndex, setCategoriesActiveIndex] = useState(0);
 	const [popupIndex, setPopupIndex] = useState({
 		name: "популярности",
 		sort: "rating",
