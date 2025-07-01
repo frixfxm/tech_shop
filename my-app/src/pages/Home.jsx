@@ -1,22 +1,31 @@
 import axios from "axios";
-import { useContext, useEffect, useState } from "react";
+import qs from "qs";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { SearchContext } from "../App";
 import Categories from "../Components/Categories";
 import Pagination from "../Components/Pagination";
 import PizzaBlock from "../Components/PizzaBlock";
 import Sceleton from "../Components/PizzaBlock/Sceleton";
-import Sort from "../Components/Sort";
-import { setCategoryId, setCurrentPage } from "../redux/Slices/filterSlice";
+import Sort, { popupItems } from "../Components/Sort";
+import {
+	setCategoryId,
+	setCurrentPage,
+	setFilters,
+} from "../redux/Slices/filterSlice";
 import "../scss/app.scss";
 
 const Home = () => {
+	const navigate = useNavigate();
 	const { categoryId, sortType, currentPage } = useSelector(
 		state => state.filter
 	);
 
-	const dispatch = useDispatch();
+	const isSearch = useRef(false);
 
+	const dispatch = useDispatch();
+	const isMounted = useRef(false);
 	const setCategoriesActiveIndex = id => {
 		dispatch(setCategoryId(id));
 	};
@@ -29,7 +38,7 @@ const Home = () => {
 		dispatch(setCurrentPage(num));
 	};
 
-	useEffect(() => {
+	function fetchPizzas() {
 		setIsLoading(true);
 
 		const sortBy = sortType.sort.replace("-", "");
@@ -45,8 +54,42 @@ const Home = () => {
 				setItems(Array.isArray(res.data) ? res.data : []);
 				setIsLoading(false);
 			});
+	}
+	//Если изменили параметры и был первый рендер
+	useEffect(() => {
+		if (isMounted.current) {
+			const queryString = qs.stringify({
+				sortProperty: sortType.sort,
+				categoryId,
+				currentPage,
+			});
 
+			navigate(`?${queryString}`);
+		}
+		isMounted.current = true;
+	}, [categoryId, sortType, searchValue, currentPage]);
+
+	//Если был первый рендер, то проверяем URL-параметры и сохраняем в редуксе
+	useEffect(() => {
+		if (window.location.search) {
+			const params = qs.parse(window.location.search.substring(1));
+			const sort = popupItems.find(obj => obj.sort === params.sortProperty);
+			dispatch(
+				setFilters({
+					...params,
+					sort,
+				})
+			);
+			isSearch.current = true;
+		}
+	}, []);
+	//Если был первый рендер, то запрашиваем пиццы
+	useEffect(() => {
 		window.scrollTo(0, 0);
+		if (!isSearch.current) {
+			fetchPizzas();
+		}
+		isSearch.current = false;
 	}, [categoryId, sortType, searchValue, currentPage]);
 
 	const pizzas = items.map(i => <PizzaBlock key={i.id} {...i} />);

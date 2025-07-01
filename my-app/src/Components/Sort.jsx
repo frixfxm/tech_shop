@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setSort } from "../redux/Slices/filterSlice";
-const popupItems = [
+export const popupItems = [
 	{ name: "популярности(DESC)", sort: "rating" },
 	{ name: "популярности(ASC)", sort: "-rating" },
 	{ name: "цене(DESC)", sort: "price" },
@@ -37,7 +37,9 @@ const Sort = () => {
 					/>
 				</svg>
 				<b>Сортировка по:</b>
-				<span onClick={() => setIsOpen(!isOpen)}>{sort.name}</span>
+				<span onClick={() => setIsOpen(!isOpen)}>
+					{sort?.name || "Сортировка"}
+				</span>
 			</div>
 			<div className="sort__popup">
 				{isOpen && (
