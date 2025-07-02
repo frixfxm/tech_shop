@@ -55,6 +55,7 @@ const Home = () => {
 				setIsLoading(false);
 			});
 	}
+
 	//Если изменили параметры и был первый рендер
 	useEffect(() => {
 		if (isMounted.current) {
