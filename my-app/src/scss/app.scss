@@ -21,7 +21,25 @@ body {
 }
 
 .content {
-	padding: 40px 0;
+	padding: 90px 0;
+
+	&__error-info {
+		margin: 100px auto;
+		width: 850px;
+		text-align: center;
+
+		h2 {
+			font-size: 28px;
+			font-weight: 700;
+		}
+		p {
+			margin-top: 30px;
+			font-size: 22px;
+		}
+		a {
+			color: orange;
+		}
+	}
 
 	&__title {
 		margin: 35px 0;

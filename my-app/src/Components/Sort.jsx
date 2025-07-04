@@ -1,24 +1,43 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setSort } from "../redux/Slices/filterSlice";
+export const popupItems = [
+	{ name: "популярности(DESC)", sort: "rating" },
+	{ name: "популярности(ASC)", sort: "-rating" },
+	{ name: "цене(DESC)", sort: "price" },
+	{ name: "цене(ASC)", sort: "-price" },
+	{ name: "алфавиту(DESC)", sort: "title" },
+	{ name: "алфавиту(ASC)", sort: "-title" },
+];
 
-const Sort = ({ value, setValue }) => {
+const Sort = () => {
+	const dispatch = useDispatch();
+	const sort = useSelector(state => state.filter.sortType);
+
 	const [isOpen, setIsOpen] = useState(false);
 
-	const popupItems = [
-		{ name: "популярности(DESC)", sort: "rating" },
-		{ name: "популярности(ASC)", sort: "-rating" },
-		{ name: "цене(DESC)", sort: "price" },
-		{ name: "цене(ASC)", sort: "-price" },
-		{ name: "алфавиту(DESC)", sort: "title" },
-		{ name: "алфавиту(ASC)", sort: "-title" },
-	];
-
-	const onClicketListItem = i => {
-		setValue(i);
+	const onClicketListItem = obj => {
+		dispatch(setSort(obj));
 		setIsOpen(false);
 	};
 
+	const sortRef = useRef();
+
+	useEffect(() => {
+		const handleClickOutside = event => {
+			if (sortRef.current && !event.composedPath().includes(sortRef.current)) {
+				setIsOpen(false);
+			}
+		};
+		document.body.addEventListener("click", handleClickOutside);
+
+		return () => {
+			document.body.removeEventListener("click", handleClickOutside);
+		};
+	}, []);
+
 	return (
-		<div className="sort">
+		<div className="sort" ref={sortRef}>
 			<div className="sort__label">
 				<svg
 					width="10"
@@ -33,7 +52,9 @@ const Sort = ({ value, setValue }) => {
 					/>
 				</svg>
 				<b>Сортировка по:</b>
-				<span onClick={() => setIsOpen(!isOpen)}>{value.name}</span>
+				<span onClick={() => setIsOpen(!isOpen)}>
+					{sort?.name || "Сортировка"}
+				</span>
 			</div>
 			<div className="sort__popup">
 				{isOpen && (
@@ -42,7 +63,7 @@ const Sort = ({ value, setValue }) => {
 							<li
 								key={i}
 								onClick={() => onClicketListItem(obj)}
-								className={value.sort === obj.sort ? "active" : ""}
+								className={sort.sort === obj.sort ? "active" : ""}
 							>
 								{obj.name}
 							</li>
