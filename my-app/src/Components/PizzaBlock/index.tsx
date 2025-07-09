@@ -1,24 +1,45 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addItem } from "../../redux/Slices/cartSlice";
+import { Link } from "react-router-dom";
+import {
+	addItem,
+	cartIdSelector,
+	CartItem,
+} from "../../redux/Slices/cartSlice";
 
-const PizzaBlock = ({ id, title, price, imageUrl, sizes, types }) => {
+type CartItemProps = {
+	id: string;
+	title: string;
+	types: number[];
+	price: number;
+	count: number;
+	imageUrl: string;
+	sizes: number[];
+};
+
+const PizzaBlock: React.FC<CartItemProps> = ({
+	id,
+	title,
+	price,
+	imageUrl,
+	sizes,
+	types,
+}) => {
 	const dispatch = useDispatch();
 	const [sizeClick, setSizeClick] = useState(0);
 	const [typeClick, setTypeClick] = useState(0);
-	const cartItem = useSelector(state =>
-		state.cart.item.find(obj => obj.id === id)
-	);
+	const cartItem = useSelector(cartIdSelector(id));
 	const addedItem = cartItem ? cartItem.count : 0;
 	const typeNames = ["традиционное", "пышное"];
 	const onClickAdd = () => {
-		const item = {
+		const item: CartItem = {
 			id,
 			title,
 			price,
 			imageUrl,
-			size: sizeClick,
-			type: typeNames[typeClick],
+			sizes: sizes[sizeClick],
+			types: typeNames[typeClick],
+			count: 0,
 		};
 		dispatch(addItem(item));
 	};
@@ -26,8 +47,10 @@ const PizzaBlock = ({ id, title, price, imageUrl, sizes, types }) => {
 	return (
 		<div className="pizza-block-wrapper">
 			<div className="pizza-block">
-				<img className="pizza-block__image" src={imageUrl} alt="Pizza" />
-				<h4 className="pizza-block__title">{title}</h4>
+				<Link key={id} to={`/pizza/${id}`}>
+					<img className="pizza-block__image" src={imageUrl} alt="Pizza" />
+					<h4 className="pizza-block__title">{title}</h4>
+				</Link>
 				<div className="pizza-block__selector">
 					<ul>
 						{types.map(i => {
@@ -72,7 +95,7 @@ const PizzaBlock = ({ id, title, price, imageUrl, sizes, types }) => {
 							/>
 						</svg>
 						<span>Добавить</span>
-						{addedItem > 0 && <i>{cartItem.count}</i>}
+						{addedItem > 0 && cartItem && <i>{cartItem.count}</i>}
 					</div>
 				</div>
 			</div>
