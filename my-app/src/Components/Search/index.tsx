@@ -1,21 +1,28 @@
 import debounce from "lodash.debounce";
-import { useCallback, useContext, useRef, useState } from "react";
-import { SearchContext } from "../../App";
+import React, { useCallback, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { setSearchValue } from "../../redux/Slices/filterSlice";
 import styles from "./Search.module.scss";
 
 const Search = () => {
+	const dispatch = useDispatch();
 	const [value, setValue] = useState("");
-	const { setSearchValue } = useContext(SearchContext);
-	const inputRef = useRef();
+	const inputRef = useRef<HTMLInputElement>(null);
+
+	const onClickClear = () => {
+		dispatch(setSearchValue(""));
+		setValue("");
+		inputRef.current?.focus();
+	};
 
 	const updateSearchValue = useCallback(
-		debounce(str => {
-			setSearchValue(str);
+		debounce((str: string) => {
+			dispatch(setSearchValue(str));
 		}, 1000),
 		[]
 	);
 
-	const onChangeInput = event => {
+	const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setValue(event.target.value);
 		updateSearchValue(event.target.value);
 	};
@@ -70,11 +77,15 @@ const Search = () => {
 				onChange={onChangeInput}
 				type="text"
 				className={styles.input}
-				placeholder="Поиск пиццы..."
+				placeholder="Поиск техники..."
 			/>
+
 			{value && (
 				<svg
-					onClick={() => setSearchValue("")}
+					onClick={() => {
+						dispatch(setSearchValue(""));
+						setValue("");
+					}}
 					className={styles.delIco}
 					id="Layer_1"
 					version="1.1"

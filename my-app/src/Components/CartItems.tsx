@@ -1,7 +1,22 @@
+import React from "react";
 import { useDispatch } from "react-redux";
 import { addItem, minusItem, removeItem } from "../redux/Slices/cartSlice";
 
-const CartItems = ({ id, title, type, price, count, imageUrl }) => {
+type CartItemProps = {
+	id: string;
+	title: string;
+	price: number;
+	count: number;
+	imageUrl: string;
+};
+
+const CartItems: React.FC<CartItemProps> = ({
+	id,
+	title,
+	price,
+	count,
+	imageUrl,
+}) => {
 	const dispatch = useDispatch();
 
 	const removeObj = () => {
@@ -12,6 +27,10 @@ const CartItems = ({ id, title, type, price, count, imageUrl }) => {
 		dispatch(
 			addItem({
 				id,
+				title,
+				price,
+				count,
+				imageUrl,
 			})
 		);
 	};
@@ -22,11 +41,11 @@ const CartItems = ({ id, title, type, price, count, imageUrl }) => {
 	return (
 		<div className="cart__item">
 			<div className="cart__item-img">
-				<img className="pizza-block__image" src={imageUrl} alt="Pizza" />
+				<img className="pizza-block__image" src={imageUrl} alt={title} />
 			</div>
 			<div className="cart__item-info">
 				<h3>{title}</h3>
-				<p>{type}, 26 см.</p>
+				<p>{price.toLocaleString('ru-RU')} ₽ за шт.</p>
 			</div>
 			<div className="cart__item-count">
 				<div
@@ -74,7 +93,7 @@ const CartItems = ({ id, title, type, price, count, imageUrl }) => {
 				</div>
 			</div>
 			<div className="cart__item-price">
-				<b>{price * count} ₽</b>
+				<b>{(price * count).toLocaleString('ru-RU')} ₽</b>
 			</div>
 			<div className="cart__item-remove">
 				<div
