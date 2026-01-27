@@ -6,11 +6,9 @@ import { RootState } from "../store";
 export type CartItem = {
 	id: string;
 	title: string;
-	types: string;
 	price: number;
 	count: number;
 	imageUrl: string;
-	sizes: number;
 };
 
 interface CartSliceState {

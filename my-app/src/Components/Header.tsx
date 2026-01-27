@@ -1,12 +1,12 @@
 import React, { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
-import logo from "../assets/img/pizza-logo.svg";
+import logo from "../assets/img/laptop-svgrepo-com.svg";
 import { cartSelection } from "../redux/Slices/cartSlice";
 import Search from "./Search";
 const Header = () => {
 	const { totalPrice, item } = useSelector(cartSelection);
-	const location = useLocation;
+	const location = useLocation();
 	const totalCount = item.reduce(
 		(sum: number, item: any) => sum + item.count,
 		0
@@ -26,18 +26,18 @@ const Header = () => {
 			<div className="container">
 				<Link to="/">
 					<div className="header__logo">
-						<img width="38" src={logo} alt="Pizza logo" />
+						<img width="38" src={logo} alt="Tech Shop logo" />
 						<div>
-							<h1>React Pizza</h1>
-							<p>самая вкусная пицца во вселенной</p>
+							<h1>Tech Shop</h1>
+							<p>лучшая техника по выгодным ценам</p>
 						</div>
 					</div>
 				</Link>
-				{location().pathname !== "/cart" && <Search />}
+				{location.pathname !== "/cart" && <Search />}
 				<div className="header__cart">
-					{location().pathname !== "/cart" && (
+					{location.pathname !== "/cart" && (
 						<Link to="/cart" className="button button--cart">
-							<span>{totalPrice} ₽</span>
+							<span>{totalPrice.toLocaleString('ru-RU')} ₽</span>
 							<div className="button__delimiter"></div>
 							<svg
 								width="18"

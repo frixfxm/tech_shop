@@ -10,6 +10,7 @@ const NotFoundBlock: React.FC = () => {
 			<h5 className={style.description}>
 				К сожалению данная страница отсутствует в нашем магазине
 			</h5>
+			<h3>Vlad soset biby</h3>
 		</div>
 	);
 };

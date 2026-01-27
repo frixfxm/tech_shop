@@ -9,11 +9,11 @@ const Categories: React.FC<CategoriesProps> = React.memo(
 	({ value, setValue }) => {
 		const categories = [
 			"Все",
-			"Мясные",
-			"Вегетарианская",
-			"Гриль",
-			"Острые",
-			"Закрытые",
+			"Телефоны",
+			"Компьютеры",
+			"Телевизоры",
+			"Пылесосы",
+			"Планшеты",
 		];
 
 		return (

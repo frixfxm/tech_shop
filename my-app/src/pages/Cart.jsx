@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import CartEpmty from "../Components/CartEmpty";
+import CartEmpty from "../Components/CartEmpty";
 import CartItems from "../Components/CartItems";
 import { cartSelection, clearItems } from "../redux/Slices/cartSlice";
 const Cart = () => {
@@ -13,7 +13,7 @@ const Cart = () => {
 	};
 
 	if (!totalPrice) {
-		return <CartEpmty />;
+		return <CartEmpty />;
 	}
 	return (
 		<div className="container container--cart">
@@ -102,10 +102,10 @@ const Cart = () => {
 				<div className="cart__bottom">
 					<div className="cart__bottom-details">
 						<span>
-							Всего пицц: <b>{totalCount} шт.</b>
+							Всего товаров: <b>{totalCount} шт.</b>
 						</span>
 						<span>
-							Сумма заказа: <b>{totalPrice} ₽</b>
+							Сумма заказа: <b>{totalPrice.toLocaleString('ru-RU')} ₽</b>
 						</span>
 					</div>
 					<div className="cart__bottom-buttons">

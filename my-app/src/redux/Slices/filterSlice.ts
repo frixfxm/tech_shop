@@ -59,7 +59,7 @@ const filterSlice = createSlice({
 export const sortTypeSelector = (state: RootState) => state.filter.sortType;
 export const filterSelector = (state: RootState) => state.filter;
 
-export const pizzasSelector = (state: RootState) => state.pizzas;
+export const productsSelector = (state: RootState) => state.products;
 
 export const {
 	setCategoryId,

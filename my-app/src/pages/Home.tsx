@@ -4,17 +4,17 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Categories from "../Components/Categories";
 import Pagination from "../Components/Pagination";
-import PizzaBlock from "../Components/PizzaBlock";
+import ProductBlock from "../Components/PizzaBlock";
 import Sceleton from "../Components/PizzaBlock/Sceleton";
 import Sort, { popupItems } from "../Components/Sort";
 import {
 	filterSelector,
-	pizzasSelector,
+	productsSelector,
 	setCategoryId,
 	setCurrentPage,
 	setFilters,
 } from "../redux/Slices/filterSlice";
-import { fetchPizzasSL } from "../redux/Slices/pizzasSlice";
+import { fetchProductsSL } from "../redux/Slices/productsSlice";
 import { useAppDispatch } from "../redux/store";
 import "../scss/app.scss";
 
@@ -32,19 +32,12 @@ const Home = () => {
 		dispatch(setCategoryId(id));
 	}, []);
 
-	const { items, status } = useSelector(pizzasSelector);
+	const { items, status } = useSelector(productsSelector);
 
 	const onChangePage = (num: number) => {
 		dispatch(setCurrentPage(num));
 	};
-	async function fetchPizzas() {
-		type fethPizza = {
-			sortBy: string;
-			order: string;
-			category: number;
-			search: string;
-			currentPage: number;
-		};
+	async function fetchProducts() {
 		const sortBy = sortType.sort.replace("-", "");
 		const order = sortType.sort.includes("-") ? "asc" : "desc";
 		const category = categoryId > 0 ? `category=${categoryId}` : "";
@@ -52,7 +45,7 @@ const Home = () => {
 
 		try {
 			dispatch(
-				fetchPizzasSL({
+				fetchProductsSL({
 					sortBy,
 					order,
 					category,
@@ -106,16 +99,16 @@ const Home = () => {
 			isSearch.current = true;
 		}
 	}, []);
-	//Если был первый рендер, то запрашиваем пиццы
+	//Если был первый рендер, то запрашиваем товары
 	useEffect(() => {
 		window.scrollTo(0, 0);
 		if (!isSearch.current) {
-			fetchPizzas();
+			fetchProducts();
 		}
 		isSearch.current = false;
 	}, [categoryId, sortType, searchValue, currentPage]);
 
-	const pizzas = items.map(i => <PizzaBlock key={i.id} {...i} />);
+	const products = items.map(i => <ProductBlock key={i.id} {...i} />);
 
 	const skeletons = [...new Array(6)].map((_, index) => (
 		<Sceleton key={index} />
@@ -127,21 +120,17 @@ const Home = () => {
 				<Categories value={categoryId} setValue={setCategoriesActiveIndex} />
 				<Sort />
 			</div>
-			<h2 className="content__title">Все пиццы</h2>
+			<h2 className="content__title">Вся техника</h2>
 			{status === "error" ? (
 				<div className="content__error-info">
-					<h1>Сорянчик чегодня питс не будет 👿</h1>
+					<h1>Ошибка загрузки товаров 😕</h1>
 					<p>
-						Мы не извиняемся, потому что пацаны не извиняются, кстати вместо
-						пицц есть такая штука{" "}
-						<a href="https://fitness-cccp.ru/clubs/solntsevo/?utm_source=direct.yandex.ru&utm_medium=cpc&utm_campaign=rak_rk+solntsevo+poisk+key+fitnes+geo_metro_rajony&rak_cid=27995846&rak_source_type=search&rak_source=none&rak_position_type=premium&rak_position=3&rak_ad_id=4485227676&rak_phrase_id=47558272888&rak_retargeting_id=47558272888&calltouch_tm=yd_c:27995846_gb:2802756594_ad:4485227676_ph:47558272888_st:search_pt:premium_p:3_s:none_dt:desktop_reg:216_ret:47558272888_apt:none&yclid=11588521511052115967">
-							тык👈
-						</a>
+						К сожалению, не удалось загрузить товары. Пожалуйста, попробуйте обновить страницу.
 					</p>
 				</div>
 			) : (
 				<div className="content__items">
-					{status === "loading" ? skeletons : pizzas}
+					{status === "loading" ? skeletons : products}
 				</div>
 			)}
 
