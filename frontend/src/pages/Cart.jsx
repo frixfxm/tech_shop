@@ -99,7 +99,7 @@ const Cart = () => {
 							<CartItems key={e.id} {...e} />
 						))}
 				</div>
-				<div className="cart__bottom">
+				<div className="cart__bottom"> 
 					<div className="cart__bottom-details">
 						<span>
 							Всего товаров: <b>{totalCount} шт.</b>

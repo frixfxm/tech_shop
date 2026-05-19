@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { API_URL } from "../api/config";
 
 const ProductPage = () => {
 	const { id } = useParams();
@@ -13,9 +14,7 @@ const ProductPage = () => {
 	useEffect(() => {
 		async function fetchProduct() {
 			try {
-				const { data } = await axios.get(
-					`https://685452cb6a6ef0ed662ec830.mockapi.io/pizzas/${id}`
-				);
+				const { data } = await axios.get(`${API_URL}/products/${id}`);
 				setProduct(data);
 			} catch (error) {
 				if (error instanceof Error) {

@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { API_URL } from "../../api/config";
 
 export type SearchProductParams = {
 	sortBy: string;
@@ -13,9 +14,19 @@ export const fetchProductsSL = createAsyncThunk<Product[], SearchProductParams>(
 	"product/fetchProducts",
 	async params => {
 		const { sortBy, order, category, search, currentPage } = params;
-		const { data } = await axios.get<Product[]>(
-			`https://685452cb6a6ef0ed662ec830.mockapi.io/pizzas?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
-		);
+		const categoryId = category.replace("category=", "");
+		const searchValue = search.replace("&search=", "");
+
+		const { data } = await axios.get<Product[]>(`${API_URL}/products`, {
+			params: {
+				page: currentPage,
+				limit: 4,
+				sortBy,
+				order,
+				...(categoryId ? { category: categoryId } : {}),
+				...(searchValue ? { search: searchValue } : {}),
+			},
+		});
 		return data;
 	}
 );
